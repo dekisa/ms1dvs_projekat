@@ -43,6 +43,7 @@ timing
 *.sopc_builder
 *.summary
 *.tcl
+!pin_assign_de0nano.tcl
 *.txt # Explicitly add any text files used
 *~
 *example*
