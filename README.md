@@ -9,4 +9,4 @@ Struktura foldera:
 	blog: unosi u blog
 
 Blog:
-	[Pocetak rada na projektu	12.15.2018.]()
+	[Pocetak rada na projektu	12.15.2018.](blog/01_pocetak_rada.md)
