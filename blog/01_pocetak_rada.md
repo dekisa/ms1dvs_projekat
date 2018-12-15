@@ -1,6 +1,7 @@
 # Pocetak rada na projektu
 [<< Nazad na pocetak](../README.md)\
 Datum: 15.12.2018.
+Tag: v0.1
 
 Napravljen je procesorski sistem i testiran je Hello World program. Ovaj sistem ce se koristiti u daljem radu.
 
