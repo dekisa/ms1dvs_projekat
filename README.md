@@ -8,5 +8,6 @@ Struktura foldera:
 - hw: fajlovi projekta
 - blog: unosi u blog
 
-Blog:
-	[Pocetak rada na projektu	12.15.2018.](blog/01_pocetak_rada.md)
+Blog:\
+	[Pocetak rada na projektu - Nios II sistem	12.15.2018.](blog/01_pocetak_rada.md)\
+	[Ucitavanje slike i merenje performansi	29.15.2018.](blog/02_load_performance.md)\
