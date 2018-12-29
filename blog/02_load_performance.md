@@ -1,4 +1,4 @@
-# Pocetak rada na projektu
+# Ucitavanje slike i merenje performansi
 [<< Nazad na pocetak](../README.md)\
 Datum: 29.12.2019
 Tag: v0.2
