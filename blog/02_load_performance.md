@@ -1,6 +1,6 @@
 # Ucitavanje slike i merenje performansi
 [<< Nazad na pocetak](../README.md)\
-Datum: 29.12.2019
+Datum: 29.12.2018.
 Tag: v0.2
 
 U ovom koraku je modifikovan hardver sa sledecim izmenama:
