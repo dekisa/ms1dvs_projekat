@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE22F17) Path("F:/etf_offline/ms1dvs_projekat/hw/output_files/") File("histeq_accel.sof") MfrSpec(OpMask(1));
+		Device PartName(EP4CE22F17) Path("C:/Users/Amin/git/ms1dvs_projekat/hw/output_files/") File("histeq_accel.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 
