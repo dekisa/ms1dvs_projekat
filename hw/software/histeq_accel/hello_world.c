@@ -65,7 +65,8 @@ int main()
 		for (j = 0; j< width; j++)
 		{
 			/*Calculate histogram if it is in the target block*/
-			if (i>= tl_x && i < br_x && j >= tl_y && j < br_y )
+			// promenio sam ovaj if, ovako je izgledao ranije: if (i>= tl_x && i < br_x && j >= tl_y && j < br_y )
+			if (i>= tl_x && i <= br_x && j >= tl_y && j <= br_y )
 				hist[(int)input_image[i*width + j]]++;
 		}
 	}
@@ -100,10 +101,13 @@ int main()
 	{
 		for (j = 0; j< width; j++)
 		{
-			if (i>= tl_x && i < br_x && j >= tl_y && j < br_y )
-				output_image[i*width + j] = (unsigned char)cummhist[input_image[i*width + j]];
-			else
-				output_image[i*width + j] = input_image[i*width + j];
+			// ovo nam ne treba(jer treba da primenimo cummhist na celu ulaznu sliku bez obzira na region od interesa)
+			//if (i>= tl_x && i < br_x && j >= tl_y && j < br_y )
+			//	output_image[i*width + j] = (unsigned char)cummhist[input_image[i*width + j]];
+			//else
+			//	output_image[i*width + j] = input_image[i*width + j];
+			//ovo nam samo treba:
+			output_image[i*width + j] = (unsigned char)cummhist[input_image[i*width + j]];
 		}
 	}
 	//Stop timer for image processing
