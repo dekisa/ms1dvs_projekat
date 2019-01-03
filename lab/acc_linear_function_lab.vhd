@@ -1,0 +1,216 @@
+-- acc_linear_function.vhd
+
+-- This file was auto-generated as a prototype implementation of a module
+-- created in component editor.  It ties off all outputs to ground and
+-- ignores all inputs.  It needs to be edited to make it do something
+-- useful.
+-- 
+-- This file will not be automatically regenerated.  You should check it in
+-- to your version control system if you want to keep it.
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity acc_linear_function is
+	port (
+		reset                  : in  std_logic                     := '0';             --  reset.reset
+		avs_params_address     : in  std_logic                     := '0';             -- params.address
+		avs_params_read        : in  std_logic                     := '0';             --       .read
+		avs_params_readdata    : out std_logic_vector(7 downto 0);                     --       .readdata
+		avs_params_write       : in  std_logic                     := '0';             --       .write
+		avs_params_writedata   : in  std_logic_vector(7 downto 0)  := (others => '0'); --       .writedata
+		avs_params_waitrequest : out std_logic;                                        --       .waitrequest
+		clk                    : in  std_logic                     := '0';             --  clock.clk
+		asi_in_data            : in  std_logic_vector(7 downto 0)  := (others => '0'); --     in.data
+		asi_in_ready           : out std_logic;                                        --       .ready
+		asi_in_valid           : in  std_logic                     := '0';             --       .valid
+		asi_in_sop             : in  std_logic                     := '0';             --       .startofpacket
+		asi_in_eop             : in  std_logic                     := '0';             --       .endofpacket
+		aso_out_data           : out std_logic_vector(7 downto 0);                    --    out.data
+		aso_out_ready          : in  std_logic                     := '0';             --       .ready
+		aso_out_valid          : out std_logic;                                        --       .valid
+		aso_out_sop            : out std_logic;                                        --       .startofpacket
+		aso_out_eop            : out std_logic                                         --       .endofpacket
+	);
+end entity acc_linear_function;
+
+architecture rtl of acc_linear_function is
+	signal a_reg : std_logic_vector(7 downto 0);
+	signal b_reg : std_logic_vector(7 downto 0);
+	
+	constant A_ADDR : std_logic := '0';
+	constant B_ADDR : std_logic := '1';
+	
+	signal a_strobe : std_logic;
+	signal b_strobe : std_logic;
+	
+	signal read_out_mux : std_logic_vector(7 downto 0);
+	
+	type state is (wait_input, process_input, wait_output, wait_output_and_process, full_process);
+	
+	signal current_state, next_state : state;
+
+	signal input_sample : signed(7 downto 0);
+	signal output_sample : signed(15 downto 0);
+	
+	signal int_asi_in_ready : std_logic;
+
+
+begin
+
+	a_strobe <= '1' when (avs_params_write = '1') and (avs_params_address = A_ADDR) else '0';
+	b_strobe <= '1' when (avs_params_write = '1') and (avs_params_address = B_ADDR) else '0';
+	
+	read_out_mux <= a_reg when (avs_params_address = A_ADDR) else
+						 b_reg when (avs_params_address = B_ADDR) else
+						 "00000000";
+	
+	write_reg_a: process(clk, reset)
+	begin
+		if (reset = '1') then
+			a_reg <= "00000010";
+		elsif (rising_edge(clk)) then
+			if (a_strobe = '1') then
+				a_reg <= avs_params_writedata;
+			end if;
+		end if;
+	end process;
+
+	write_reg_b: process(clk, reset)
+	begin
+		if (reset = '1') then
+			b_reg <= "00000011";
+		elsif (rising_edge(clk)) then
+			if (b_strobe = '1') then
+				b_reg <= avs_params_writedata;
+			end if;
+		end if;
+	end process;
+
+	read_regs: process(clk, reset)
+	begin
+		if (reset = '1') then
+			avs_params_readdata <= "00000000";
+		elsif (rising_edge(clk)) then
+			avs_params_readdata <= read_out_mux;
+		end if;
+	end process;
+	
+	process_sample : process(clk, reset)
+	begin
+		if (reset = '1') then
+			output_sample <= x"BEEF";
+		elsif (rising_edge(clk)) then
+			if ((current_state = process_input) or ((current_state = full_process or current_state = wait_output_and_process) and aso_out_ready = '1')) then
+				output_sample <= signed(a_reg)*input_sample + signed(b_reg);
+			end if;
+		end if;
+	end process;
+	
+	aso_out_data <= std_logic_vector(output_sample(7 downto 0));
+
+	read_sample : process(clk, reset)
+	begin
+		if (reset = '1') then
+			input_sample <= x"00";
+		elsif (rising_edge(clk)) then
+			if (int_asi_in_ready = '1' and asi_in_valid = '1') then
+				input_sample <= signed(asi_in_data);
+			end if;
+		end if;
+	end process;
+	
+	control_fsm: process(clk, reset)
+	begin
+		if (reset = '1') then
+			current_state <= wait_input;
+		elsif (rising_edge(clk)) then
+			current_state <= next_state;
+		end if;
+	end process;
+	
+	
+	streaming_protocol: process(current_state, asi_in_valid, aso_out_ready)
+	begin
+		case current_state is
+
+			when wait_input =>
+				int_asi_in_ready <= '1';
+				aso_out_valid <= '0';
+				
+				if (asi_in_valid = '1') then
+					next_state <= process_input;
+				else
+					next_state <= wait_input;
+				end if;
+
+			when process_input =>
+				int_asi_in_ready <= '1';
+				aso_out_valid <= '0';
+				
+				if (asi_in_valid = '1') then
+					next_state <= full_process;
+				else
+					next_state <= wait_output;
+				end if;
+				
+			when wait_output =>
+				int_asi_in_ready <= '1';
+				aso_out_valid <= '1';
+
+				if (aso_out_ready = '1') then
+					if (asi_in_valid = '1') then
+						next_state <= process_input;
+					else
+						next_state <= wait_input;
+					end if;
+				else
+			      if	(asi_in_valid = '1') then
+						next_state <= wait_output_and_process;
+					else
+						next_state <= wait_output;
+					end if;
+				end if;
+			
+			when full_process =>
+				aso_out_valid <= '1';
+				int_asi_in_ready <= '1';
+
+				if (aso_out_ready = '1' and asi_in_valid = '1') then
+					next_state <= full_process;
+				elsif (aso_out_ready = '1' and asi_in_valid = '0') then
+					next_state <= wait_output;
+				else
+					int_asi_in_ready <= '0';
+					next_state <= wait_output_and_process;
+				end if;
+				
+			when wait_output_and_process =>
+				int_asi_in_ready <= '0';
+				aso_out_valid <= '1';
+
+				if (aso_out_ready = '1') then
+					if (asi_in_valid = '1') then
+						int_asi_in_ready <= '1';
+						next_state <= full_process;
+					else
+						next_state <= wait_output;
+					end if;
+				else
+					next_state <= wait_output_and_process;
+				end if;
+
+				
+		end case;
+				
+	
+	end process;
+	
+	asi_in_ready <= int_asi_in_ready;
+	
+	aso_out_eop <= '0';
+	aso_out_sop <= '0';
+
+	avs_params_waitrequest <= '0';
+end architecture rtl; -- of acc_linear_function
