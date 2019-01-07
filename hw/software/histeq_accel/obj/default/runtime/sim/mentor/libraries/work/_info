@@ -1,0 +1,127 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dF:/etf_offline/ms1dvs_projekat/hw/software/histeq_accel/obj/default/runtime/sim/mentor
+Eprocessor_system
+Z1 w1546866225
+Z2 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z5 8F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system.vhd
+Z6 FF:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system.vhd
+l0
+L9
+VQcz1Dc>>^[bZ;TKGY`k4V1
+!s100 T94kQjo10ik4`GR03ORSE3
+Z7 OV;C;10.5b;63
+32
+Z8 !s110 1546868586
+!i10b 1
+Z9 !s108 1546868586.000000
+Z10 !s90 -reportprogress|300|F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system.vhd|
+Z11 !s107 F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system.vhd|
+!i113 1
+Z12 tExplicit 1 CvgOpt 0
+Artl
+R2
+R3
+R4
+DEx4 work 16 processor_system 0 22 Qcz1Dc>>^[bZ;TKGY`k4V1
+l330
+L16
+V1aT9D5i`E`YZaS0k6f]L:1
+!s100 ISV`QKnDOmX@jAIjze54g1
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+Eprocessor_system_rst_controller
+R1
+R2
+R3
+R4
+R0
+Z13 8F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller.vhd
+Z14 FF:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller.vhd
+l0
+L9
+VLGg=@7?63>boO>m2i_@0c0
+!s100 RQhUzI[f7>5Yi>oRI^]X82
+R7
+32
+R8
+!i10b 1
+R9
+Z15 !s90 -reportprogress|300|F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller.vhd|
+Z16 !s107 F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller.vhd|
+!i113 1
+R12
+Artl
+R2
+R3
+R4
+DEx4 work 31 processor_system_rst_controller 0 22 LGg=@7?63>boO>m2i_@0c0
+l142
+L75
+VzFO11[G`A7ac6o`oL9gVP1
+!s100 0zPI4dUDXV>QHI>98R=S^1
+R7
+32
+R8
+!i10b 1
+R9
+R15
+R16
+!i113 1
+R12
+Eprocessor_system_rst_controller_001
+R1
+R2
+R3
+R4
+R0
+Z17 8F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller_001.vhd
+Z18 FF:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller_001.vhd
+l0
+L9
+VaaL=BhamKAeIJ08@mDg1K1
+!s100 j;da;gN`5Ta18m<HfAkU:1
+R7
+32
+R8
+!i10b 1
+R9
+Z19 !s90 -reportprogress|300|F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller_001.vhd|
+Z20 !s107 F:/etf_offline/ms1dvs_projekat/hw/processor_system/simulation/processor_system_rst_controller_001.vhd|
+!i113 1
+R12
+Artl
+R2
+R3
+R4
+Z21 DEx4 work 35 processor_system_rst_controller_001 0 22 aaL=BhamKAeIJ08@mDg1K1
+l142
+L75
+Z22 V`_0fJzlN0ACUDDLdlA4<A3
+Z23 !s100 EGzBkkN^U8k`?emOA7Pe;1
+R7
+32
+!s110 1546868587
+!i10b 1
+R9
+R19
+R20
+!i113 1
+R12
