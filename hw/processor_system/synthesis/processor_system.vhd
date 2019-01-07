@@ -133,6 +133,73 @@ architecture rtl of processor_system is
 		);
 	end component processor_system_sdram;
 
+	component processor_system_sgdma_mm2s is
+		port (
+			clk                           : in  std_logic                     := 'X';             -- clk
+			system_reset_n                : in  std_logic                     := 'X';             -- reset_n
+			csr_chipselect                : in  std_logic                     := 'X';             -- chipselect
+			csr_address                   : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- address
+			csr_read                      : in  std_logic                     := 'X';             -- read
+			csr_write                     : in  std_logic                     := 'X';             -- write
+			csr_writedata                 : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			csr_readdata                  : out std_logic_vector(31 downto 0);                    -- readdata
+			descriptor_read_readdata      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			descriptor_read_readdatavalid : in  std_logic                     := 'X';             -- readdatavalid
+			descriptor_read_waitrequest   : in  std_logic                     := 'X';             -- waitrequest
+			descriptor_read_address       : out std_logic_vector(31 downto 0);                    -- address
+			descriptor_read_read          : out std_logic;                                        -- read
+			descriptor_write_waitrequest  : in  std_logic                     := 'X';             -- waitrequest
+			descriptor_write_address      : out std_logic_vector(31 downto 0);                    -- address
+			descriptor_write_write        : out std_logic;                                        -- write
+			descriptor_write_writedata    : out std_logic_vector(31 downto 0);                    -- writedata
+			csr_irq                       : out std_logic;                                        -- irq
+			m_read_readdata               : in  std_logic_vector(7 downto 0)  := (others => 'X'); -- readdata
+			m_read_readdatavalid          : in  std_logic                     := 'X';             -- readdatavalid
+			m_read_waitrequest            : in  std_logic                     := 'X';             -- waitrequest
+			m_read_address                : out std_logic_vector(31 downto 0);                    -- address
+			m_read_read                   : out std_logic;                                        -- read
+			out_data                      : out std_logic_vector(7 downto 0);                     -- data
+			out_valid                     : out std_logic;                                        -- valid
+			out_ready                     : in  std_logic                     := 'X';             -- ready
+			out_endofpacket               : out std_logic;                                        -- endofpacket
+			out_startofpacket             : out std_logic                                         -- startofpacket
+		);
+	end component processor_system_sgdma_mm2s;
+
+	component processor_system_sgdma_s2mm is
+		port (
+			clk                           : in  std_logic                     := 'X';             -- clk
+			system_reset_n                : in  std_logic                     := 'X';             -- reset_n
+			csr_chipselect                : in  std_logic                     := 'X';             -- chipselect
+			csr_address                   : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- address
+			csr_read                      : in  std_logic                     := 'X';             -- read
+			csr_write                     : in  std_logic                     := 'X';             -- write
+			csr_writedata                 : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			csr_readdata                  : out std_logic_vector(31 downto 0);                    -- readdata
+			descriptor_read_readdata      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			descriptor_read_readdatavalid : in  std_logic                     := 'X';             -- readdatavalid
+			descriptor_read_waitrequest   : in  std_logic                     := 'X';             -- waitrequest
+			descriptor_read_address       : out std_logic_vector(31 downto 0);                    -- address
+			descriptor_read_read          : out std_logic;                                        -- read
+			descriptor_write_waitrequest  : in  std_logic                     := 'X';             -- waitrequest
+			descriptor_write_address      : out std_logic_vector(31 downto 0);                    -- address
+			descriptor_write_write        : out std_logic;                                        -- write
+			descriptor_write_writedata    : out std_logic_vector(31 downto 0);                    -- writedata
+			csr_irq                       : out std_logic;                                        -- irq
+			in_startofpacket              : in  std_logic                     := 'X';             -- startofpacket
+			in_endofpacket                : in  std_logic                     := 'X';             -- endofpacket
+			in_data                       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- data
+			in_valid                      : in  std_logic                     := 'X';             -- valid
+			in_ready                      : out std_logic;                                        -- ready
+			in_empty                      : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- empty
+			m_write_waitrequest           : in  std_logic                     := 'X';             -- waitrequest
+			m_write_address               : out std_logic_vector(31 downto 0);                    -- address
+			m_write_write                 : out std_logic;                                        -- write
+			m_write_writedata             : out std_logic_vector(31 downto 0);                    -- writedata
+			m_write_byteenable            : out std_logic_vector(3 downto 0)                      -- byteenable
+		);
+	end component processor_system_sgdma_s2mm;
+
 	component processor_system_mm_interconnect_0 is
 		port (
 			clk_0_clk_clk                                         : in  std_logic                     := 'X';             -- clk
@@ -151,6 +218,34 @@ architecture rtl of processor_system is
 			nios2_gen2_0_instruction_master_waitrequest           : out std_logic;                                        -- waitrequest
 			nios2_gen2_0_instruction_master_read                  : in  std_logic                     := 'X';             -- read
 			nios2_gen2_0_instruction_master_readdata              : out std_logic_vector(31 downto 0);                    -- readdata
+			sgdma_mm2s_descriptor_read_address                    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- address
+			sgdma_mm2s_descriptor_read_waitrequest                : out std_logic;                                        -- waitrequest
+			sgdma_mm2s_descriptor_read_read                       : in  std_logic                     := 'X';             -- read
+			sgdma_mm2s_descriptor_read_readdata                   : out std_logic_vector(31 downto 0);                    -- readdata
+			sgdma_mm2s_descriptor_read_readdatavalid              : out std_logic;                                        -- readdatavalid
+			sgdma_mm2s_descriptor_write_address                   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- address
+			sgdma_mm2s_descriptor_write_waitrequest               : out std_logic;                                        -- waitrequest
+			sgdma_mm2s_descriptor_write_write                     : in  std_logic                     := 'X';             -- write
+			sgdma_mm2s_descriptor_write_writedata                 : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			sgdma_mm2s_m_read_address                             : in  std_logic_vector(31 downto 0) := (others => 'X'); -- address
+			sgdma_mm2s_m_read_waitrequest                         : out std_logic;                                        -- waitrequest
+			sgdma_mm2s_m_read_read                                : in  std_logic                     := 'X';             -- read
+			sgdma_mm2s_m_read_readdata                            : out std_logic_vector(7 downto 0);                     -- readdata
+			sgdma_mm2s_m_read_readdatavalid                       : out std_logic;                                        -- readdatavalid
+			sgdma_s2mm_descriptor_read_address                    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- address
+			sgdma_s2mm_descriptor_read_waitrequest                : out std_logic;                                        -- waitrequest
+			sgdma_s2mm_descriptor_read_read                       : in  std_logic                     := 'X';             -- read
+			sgdma_s2mm_descriptor_read_readdata                   : out std_logic_vector(31 downto 0);                    -- readdata
+			sgdma_s2mm_descriptor_read_readdatavalid              : out std_logic;                                        -- readdatavalid
+			sgdma_s2mm_descriptor_write_address                   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- address
+			sgdma_s2mm_descriptor_write_waitrequest               : out std_logic;                                        -- waitrequest
+			sgdma_s2mm_descriptor_write_write                     : in  std_logic                     := 'X';             -- write
+			sgdma_s2mm_descriptor_write_writedata                 : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			sgdma_s2mm_m_write_address                            : in  std_logic_vector(31 downto 0) := (others => 'X'); -- address
+			sgdma_s2mm_m_write_waitrequest                        : out std_logic;                                        -- waitrequest
+			sgdma_s2mm_m_write_byteenable                         : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			sgdma_s2mm_m_write_write                              : in  std_logic                     := 'X';             -- write
+			sgdma_s2mm_m_write_writedata                          : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
 			jtag_uart_0_avalon_jtag_slave_address                 : out std_logic_vector(0 downto 0);                     -- address
 			jtag_uart_0_avalon_jtag_slave_write                   : out std_logic;                                        -- write
 			jtag_uart_0_avalon_jtag_slave_read                    : out std_logic;                                        -- read
@@ -184,7 +279,19 @@ architecture rtl of processor_system is
 			sdram_s1_byteenable                                   : out std_logic_vector(1 downto 0);                     -- byteenable
 			sdram_s1_readdatavalid                                : in  std_logic                     := 'X';             -- readdatavalid
 			sdram_s1_waitrequest                                  : in  std_logic                     := 'X';             -- waitrequest
-			sdram_s1_chipselect                                   : out std_logic                                         -- chipselect
+			sdram_s1_chipselect                                   : out std_logic;                                        -- chipselect
+			sgdma_mm2s_csr_address                                : out std_logic_vector(3 downto 0);                     -- address
+			sgdma_mm2s_csr_write                                  : out std_logic;                                        -- write
+			sgdma_mm2s_csr_read                                   : out std_logic;                                        -- read
+			sgdma_mm2s_csr_readdata                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			sgdma_mm2s_csr_writedata                              : out std_logic_vector(31 downto 0);                    -- writedata
+			sgdma_mm2s_csr_chipselect                             : out std_logic;                                        -- chipselect
+			sgdma_s2mm_csr_address                                : out std_logic_vector(3 downto 0);                     -- address
+			sgdma_s2mm_csr_write                                  : out std_logic;                                        -- write
+			sgdma_s2mm_csr_read                                   : out std_logic;                                        -- read
+			sgdma_s2mm_csr_readdata                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			sgdma_s2mm_csr_writedata                              : out std_logic_vector(31 downto 0);                    -- writedata
+			sgdma_s2mm_csr_chipselect                             : out std_logic                                         -- chipselect
 		);
 	end component processor_system_mm_interconnect_0;
 
@@ -193,9 +300,47 @@ architecture rtl of processor_system is
 			clk           : in  std_logic                     := 'X'; -- clk
 			reset         : in  std_logic                     := 'X'; -- reset
 			receiver0_irq : in  std_logic                     := 'X'; -- irq
+			receiver1_irq : in  std_logic                     := 'X'; -- irq
+			receiver2_irq : in  std_logic                     := 'X'; -- irq
 			sender_irq    : out std_logic_vector(31 downto 0)         -- irq
 		);
 	end component processor_system_irq_mapper;
+
+	component processor_system_avalon_st_adapter is
+		generic (
+			inBitsPerSymbol : integer := 8;
+			inUsePackets    : integer := 0;
+			inDataWidth     : integer := 8;
+			inChannelWidth  : integer := 3;
+			inErrorWidth    : integer := 2;
+			inUseEmptyPort  : integer := 0;
+			inUseValid      : integer := 1;
+			inUseReady      : integer := 1;
+			inReadyLatency  : integer := 0;
+			outDataWidth    : integer := 32;
+			outChannelWidth : integer := 3;
+			outErrorWidth   : integer := 2;
+			outUseEmptyPort : integer := 0;
+			outUseValid     : integer := 1;
+			outUseReady     : integer := 1;
+			outReadyLatency : integer := 0
+		);
+		port (
+			in_clk_0_clk        : in  std_logic                     := 'X';             -- clk
+			in_rst_0_reset      : in  std_logic                     := 'X';             -- reset
+			in_0_data           : in  std_logic_vector(7 downto 0)  := (others => 'X'); -- data
+			in_0_valid          : in  std_logic                     := 'X';             -- valid
+			in_0_ready          : out std_logic;                                        -- ready
+			in_0_startofpacket  : in  std_logic                     := 'X';             -- startofpacket
+			in_0_endofpacket    : in  std_logic                     := 'X';             -- endofpacket
+			out_0_data          : out std_logic_vector(31 downto 0);                    -- data
+			out_0_valid         : out std_logic;                                        -- valid
+			out_0_ready         : in  std_logic                     := 'X';             -- ready
+			out_0_startofpacket : out std_logic;                                        -- startofpacket
+			out_0_endofpacket   : out std_logic;                                        -- endofpacket
+			out_0_empty         : out std_logic_vector(1 downto 0)                      -- empty
+		);
+	end component processor_system_avalon_st_adapter;
 
 	component processor_system_rst_controller is
 		generic (
@@ -329,7 +474,7 @@ architecture rtl of processor_system is
 		);
 	end component processor_system_rst_controller_001;
 
-	signal pll_c0_clk                                                          : std_logic;                     -- pll:c0 -> [irq_mapper:clk, jtag_uart_0:clk, mm_interconnect_0:pll_c0_clk, nios2_gen2_0:clk, performance_counter_0:clk, rst_controller:clk, sdram:clk]
+	signal pll_c0_clk                                                          : std_logic;                     -- pll:c0 -> [avalon_st_adapter:in_clk_0_clk, irq_mapper:clk, jtag_uart_0:clk, mm_interconnect_0:pll_c0_clk, nios2_gen2_0:clk, performance_counter_0:clk, rst_controller:clk, sdram:clk, sgdma_mm2s:clk, sgdma_s2mm:clk]
 	signal nios2_gen2_0_data_master_readdata                                   : std_logic_vector(31 downto 0); -- mm_interconnect_0:nios2_gen2_0_data_master_readdata -> nios2_gen2_0:d_readdata
 	signal nios2_gen2_0_data_master_waitrequest                                : std_logic;                     -- mm_interconnect_0:nios2_gen2_0_data_master_waitrequest -> nios2_gen2_0:d_waitrequest
 	signal nios2_gen2_0_data_master_debugaccess                                : std_logic;                     -- nios2_gen2_0:debug_mem_slave_debugaccess_to_roms -> mm_interconnect_0:nios2_gen2_0_data_master_debugaccess
@@ -338,10 +483,38 @@ architecture rtl of processor_system is
 	signal nios2_gen2_0_data_master_read                                       : std_logic;                     -- nios2_gen2_0:d_read -> mm_interconnect_0:nios2_gen2_0_data_master_read
 	signal nios2_gen2_0_data_master_write                                      : std_logic;                     -- nios2_gen2_0:d_write -> mm_interconnect_0:nios2_gen2_0_data_master_write
 	signal nios2_gen2_0_data_master_writedata                                  : std_logic_vector(31 downto 0); -- nios2_gen2_0:d_writedata -> mm_interconnect_0:nios2_gen2_0_data_master_writedata
+	signal sgdma_s2mm_descriptor_read_readdata                                 : std_logic_vector(31 downto 0); -- mm_interconnect_0:sgdma_s2mm_descriptor_read_readdata -> sgdma_s2mm:descriptor_read_readdata
+	signal sgdma_s2mm_descriptor_read_waitrequest                              : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_descriptor_read_waitrequest -> sgdma_s2mm:descriptor_read_waitrequest
+	signal sgdma_s2mm_descriptor_read_address                                  : std_logic_vector(31 downto 0); -- sgdma_s2mm:descriptor_read_address -> mm_interconnect_0:sgdma_s2mm_descriptor_read_address
+	signal sgdma_s2mm_descriptor_read_read                                     : std_logic;                     -- sgdma_s2mm:descriptor_read_read -> mm_interconnect_0:sgdma_s2mm_descriptor_read_read
+	signal sgdma_s2mm_descriptor_read_readdatavalid                            : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_descriptor_read_readdatavalid -> sgdma_s2mm:descriptor_read_readdatavalid
+	signal sgdma_mm2s_descriptor_read_readdata                                 : std_logic_vector(31 downto 0); -- mm_interconnect_0:sgdma_mm2s_descriptor_read_readdata -> sgdma_mm2s:descriptor_read_readdata
+	signal sgdma_mm2s_descriptor_read_waitrequest                              : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_descriptor_read_waitrequest -> sgdma_mm2s:descriptor_read_waitrequest
+	signal sgdma_mm2s_descriptor_read_address                                  : std_logic_vector(31 downto 0); -- sgdma_mm2s:descriptor_read_address -> mm_interconnect_0:sgdma_mm2s_descriptor_read_address
+	signal sgdma_mm2s_descriptor_read_read                                     : std_logic;                     -- sgdma_mm2s:descriptor_read_read -> mm_interconnect_0:sgdma_mm2s_descriptor_read_read
+	signal sgdma_mm2s_descriptor_read_readdatavalid                            : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_descriptor_read_readdatavalid -> sgdma_mm2s:descriptor_read_readdatavalid
+	signal sgdma_s2mm_descriptor_write_waitrequest                             : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_descriptor_write_waitrequest -> sgdma_s2mm:descriptor_write_waitrequest
+	signal sgdma_s2mm_descriptor_write_address                                 : std_logic_vector(31 downto 0); -- sgdma_s2mm:descriptor_write_address -> mm_interconnect_0:sgdma_s2mm_descriptor_write_address
+	signal sgdma_s2mm_descriptor_write_write                                   : std_logic;                     -- sgdma_s2mm:descriptor_write_write -> mm_interconnect_0:sgdma_s2mm_descriptor_write_write
+	signal sgdma_s2mm_descriptor_write_writedata                               : std_logic_vector(31 downto 0); -- sgdma_s2mm:descriptor_write_writedata -> mm_interconnect_0:sgdma_s2mm_descriptor_write_writedata
+	signal sgdma_mm2s_descriptor_write_waitrequest                             : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_descriptor_write_waitrequest -> sgdma_mm2s:descriptor_write_waitrequest
+	signal sgdma_mm2s_descriptor_write_address                                 : std_logic_vector(31 downto 0); -- sgdma_mm2s:descriptor_write_address -> mm_interconnect_0:sgdma_mm2s_descriptor_write_address
+	signal sgdma_mm2s_descriptor_write_write                                   : std_logic;                     -- sgdma_mm2s:descriptor_write_write -> mm_interconnect_0:sgdma_mm2s_descriptor_write_write
+	signal sgdma_mm2s_descriptor_write_writedata                               : std_logic_vector(31 downto 0); -- sgdma_mm2s:descriptor_write_writedata -> mm_interconnect_0:sgdma_mm2s_descriptor_write_writedata
 	signal nios2_gen2_0_instruction_master_readdata                            : std_logic_vector(31 downto 0); -- mm_interconnect_0:nios2_gen2_0_instruction_master_readdata -> nios2_gen2_0:i_readdata
 	signal nios2_gen2_0_instruction_master_waitrequest                         : std_logic;                     -- mm_interconnect_0:nios2_gen2_0_instruction_master_waitrequest -> nios2_gen2_0:i_waitrequest
 	signal nios2_gen2_0_instruction_master_address                             : std_logic_vector(26 downto 0); -- nios2_gen2_0:i_address -> mm_interconnect_0:nios2_gen2_0_instruction_master_address
 	signal nios2_gen2_0_instruction_master_read                                : std_logic;                     -- nios2_gen2_0:i_read -> mm_interconnect_0:nios2_gen2_0_instruction_master_read
+	signal sgdma_mm2s_m_read_readdata                                          : std_logic_vector(7 downto 0);  -- mm_interconnect_0:sgdma_mm2s_m_read_readdata -> sgdma_mm2s:m_read_readdata
+	signal sgdma_mm2s_m_read_waitrequest                                       : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_m_read_waitrequest -> sgdma_mm2s:m_read_waitrequest
+	signal sgdma_mm2s_m_read_address                                           : std_logic_vector(31 downto 0); -- sgdma_mm2s:m_read_address -> mm_interconnect_0:sgdma_mm2s_m_read_address
+	signal sgdma_mm2s_m_read_read                                              : std_logic;                     -- sgdma_mm2s:m_read_read -> mm_interconnect_0:sgdma_mm2s_m_read_read
+	signal sgdma_mm2s_m_read_readdatavalid                                     : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_m_read_readdatavalid -> sgdma_mm2s:m_read_readdatavalid
+	signal sgdma_s2mm_m_write_waitrequest                                      : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_m_write_waitrequest -> sgdma_s2mm:m_write_waitrequest
+	signal sgdma_s2mm_m_write_address                                          : std_logic_vector(31 downto 0); -- sgdma_s2mm:m_write_address -> mm_interconnect_0:sgdma_s2mm_m_write_address
+	signal sgdma_s2mm_m_write_byteenable                                       : std_logic_vector(3 downto 0);  -- sgdma_s2mm:m_write_byteenable -> mm_interconnect_0:sgdma_s2mm_m_write_byteenable
+	signal sgdma_s2mm_m_write_write                                            : std_logic;                     -- sgdma_s2mm:m_write_write -> mm_interconnect_0:sgdma_s2mm_m_write_write
+	signal sgdma_s2mm_m_write_writedata                                        : std_logic_vector(31 downto 0); -- sgdma_s2mm:m_write_writedata -> mm_interconnect_0:sgdma_s2mm_m_write_writedata
 	signal mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_chipselect          : std_logic;                     -- mm_interconnect_0:jtag_uart_0_avalon_jtag_slave_chipselect -> jtag_uart_0:av_chipselect
 	signal mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_readdata            : std_logic_vector(31 downto 0); -- jtag_uart_0:av_readdata -> mm_interconnect_0:jtag_uart_0_avalon_jtag_slave_readdata
 	signal mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_waitrequest         : std_logic;                     -- jtag_uart_0:av_waitrequest -> mm_interconnect_0:jtag_uart_0_avalon_jtag_slave_waitrequest
@@ -354,6 +527,18 @@ architecture rtl of processor_system is
 	signal mm_interconnect_0_performance_counter_0_control_slave_begintransfer : std_logic;                     -- mm_interconnect_0:performance_counter_0_control_slave_begintransfer -> performance_counter_0:begintransfer
 	signal mm_interconnect_0_performance_counter_0_control_slave_write         : std_logic;                     -- mm_interconnect_0:performance_counter_0_control_slave_write -> performance_counter_0:write
 	signal mm_interconnect_0_performance_counter_0_control_slave_writedata     : std_logic_vector(31 downto 0); -- mm_interconnect_0:performance_counter_0_control_slave_writedata -> performance_counter_0:writedata
+	signal mm_interconnect_0_sgdma_mm2s_csr_chipselect                         : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_csr_chipselect -> sgdma_mm2s:csr_chipselect
+	signal mm_interconnect_0_sgdma_mm2s_csr_readdata                           : std_logic_vector(31 downto 0); -- sgdma_mm2s:csr_readdata -> mm_interconnect_0:sgdma_mm2s_csr_readdata
+	signal mm_interconnect_0_sgdma_mm2s_csr_address                            : std_logic_vector(3 downto 0);  -- mm_interconnect_0:sgdma_mm2s_csr_address -> sgdma_mm2s:csr_address
+	signal mm_interconnect_0_sgdma_mm2s_csr_read                               : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_csr_read -> sgdma_mm2s:csr_read
+	signal mm_interconnect_0_sgdma_mm2s_csr_write                              : std_logic;                     -- mm_interconnect_0:sgdma_mm2s_csr_write -> sgdma_mm2s:csr_write
+	signal mm_interconnect_0_sgdma_mm2s_csr_writedata                          : std_logic_vector(31 downto 0); -- mm_interconnect_0:sgdma_mm2s_csr_writedata -> sgdma_mm2s:csr_writedata
+	signal mm_interconnect_0_sgdma_s2mm_csr_chipselect                         : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_csr_chipselect -> sgdma_s2mm:csr_chipselect
+	signal mm_interconnect_0_sgdma_s2mm_csr_readdata                           : std_logic_vector(31 downto 0); -- sgdma_s2mm:csr_readdata -> mm_interconnect_0:sgdma_s2mm_csr_readdata
+	signal mm_interconnect_0_sgdma_s2mm_csr_address                            : std_logic_vector(3 downto 0);  -- mm_interconnect_0:sgdma_s2mm_csr_address -> sgdma_s2mm:csr_address
+	signal mm_interconnect_0_sgdma_s2mm_csr_read                               : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_csr_read -> sgdma_s2mm:csr_read
+	signal mm_interconnect_0_sgdma_s2mm_csr_write                              : std_logic;                     -- mm_interconnect_0:sgdma_s2mm_csr_write -> sgdma_s2mm:csr_write
+	signal mm_interconnect_0_sgdma_s2mm_csr_writedata                          : std_logic_vector(31 downto 0); -- mm_interconnect_0:sgdma_s2mm_csr_writedata -> sgdma_s2mm:csr_writedata
 	signal mm_interconnect_0_nios2_gen2_0_debug_mem_slave_readdata             : std_logic_vector(31 downto 0); -- nios2_gen2_0:debug_mem_slave_readdata -> mm_interconnect_0:nios2_gen2_0_debug_mem_slave_readdata
 	signal mm_interconnect_0_nios2_gen2_0_debug_mem_slave_waitrequest          : std_logic;                     -- nios2_gen2_0:debug_mem_slave_waitrequest -> mm_interconnect_0:nios2_gen2_0_debug_mem_slave_waitrequest
 	signal mm_interconnect_0_nios2_gen2_0_debug_mem_slave_debugaccess          : std_logic;                     -- mm_interconnect_0:nios2_gen2_0_debug_mem_slave_debugaccess -> nios2_gen2_0:debug_mem_slave_debugaccess
@@ -376,9 +561,22 @@ architecture rtl of processor_system is
 	signal mm_interconnect_0_sdram_s1_readdatavalid                            : std_logic;                     -- sdram:za_valid -> mm_interconnect_0:sdram_s1_readdatavalid
 	signal mm_interconnect_0_sdram_s1_write                                    : std_logic;                     -- mm_interconnect_0:sdram_s1_write -> mm_interconnect_0_sdram_s1_write:in
 	signal mm_interconnect_0_sdram_s1_writedata                                : std_logic_vector(15 downto 0); -- mm_interconnect_0:sdram_s1_writedata -> sdram:az_data
-	signal irq_mapper_receiver0_irq                                            : std_logic;                     -- jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
+	signal irq_mapper_receiver0_irq                                            : std_logic;                     -- sgdma_s2mm:csr_irq -> irq_mapper:receiver0_irq
+	signal irq_mapper_receiver1_irq                                            : std_logic;                     -- sgdma_mm2s:csr_irq -> irq_mapper:receiver1_irq
+	signal irq_mapper_receiver2_irq                                            : std_logic;                     -- jtag_uart_0:av_irq -> irq_mapper:receiver2_irq
 	signal nios2_gen2_0_irq_irq                                                : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> nios2_gen2_0:irq
-	signal rst_controller_reset_out_reset                                      : std_logic;                     -- rst_controller:reset_out -> [irq_mapper:reset, mm_interconnect_0:nios2_gen2_0_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
+	signal sgdma_mm2s_out_valid                                                : std_logic;                     -- sgdma_mm2s:out_valid -> avalon_st_adapter:in_0_valid
+	signal sgdma_mm2s_out_data                                                 : std_logic_vector(7 downto 0);  -- sgdma_mm2s:out_data -> avalon_st_adapter:in_0_data
+	signal sgdma_mm2s_out_ready                                                : std_logic;                     -- avalon_st_adapter:in_0_ready -> sgdma_mm2s:out_ready
+	signal sgdma_mm2s_out_startofpacket                                        : std_logic;                     -- sgdma_mm2s:out_startofpacket -> avalon_st_adapter:in_0_startofpacket
+	signal sgdma_mm2s_out_endofpacket                                          : std_logic;                     -- sgdma_mm2s:out_endofpacket -> avalon_st_adapter:in_0_endofpacket
+	signal avalon_st_adapter_out_0_valid                                       : std_logic;                     -- avalon_st_adapter:out_0_valid -> sgdma_s2mm:in_valid
+	signal avalon_st_adapter_out_0_data                                        : std_logic_vector(31 downto 0); -- avalon_st_adapter:out_0_data -> sgdma_s2mm:in_data
+	signal avalon_st_adapter_out_0_ready                                       : std_logic;                     -- sgdma_s2mm:in_ready -> avalon_st_adapter:out_0_ready
+	signal avalon_st_adapter_out_0_startofpacket                               : std_logic;                     -- avalon_st_adapter:out_0_startofpacket -> sgdma_s2mm:in_startofpacket
+	signal avalon_st_adapter_out_0_endofpacket                                 : std_logic;                     -- avalon_st_adapter:out_0_endofpacket -> sgdma_s2mm:in_endofpacket
+	signal avalon_st_adapter_out_0_empty                                       : std_logic_vector(1 downto 0);  -- avalon_st_adapter:out_0_empty -> sgdma_s2mm:in_empty
+	signal rst_controller_reset_out_reset                                      : std_logic;                     -- rst_controller:reset_out -> [avalon_st_adapter:in_rst_0_reset, irq_mapper:reset, mm_interconnect_0:nios2_gen2_0_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
 	signal rst_controller_reset_out_reset_req                                  : std_logic;                     -- rst_controller:reset_req -> [nios2_gen2_0:reset_req, rst_translator:reset_req_in]
 	signal nios2_gen2_0_debug_reset_request_reset                              : std_logic;                     -- nios2_gen2_0:debug_reset_request -> [rst_controller:reset_in1, rst_controller_001:reset_in1]
 	signal rst_controller_001_reset_out_reset                                  : std_logic;                     -- rst_controller_001:reset_out -> [mm_interconnect_0:pll_inclk_interface_reset_reset_bridge_in_reset_reset, pll:reset]
@@ -388,7 +586,7 @@ architecture rtl of processor_system is
 	signal mm_interconnect_0_sdram_s1_read_ports_inv                           : std_logic;                     -- mm_interconnect_0_sdram_s1_read:inv -> sdram:az_rd_n
 	signal mm_interconnect_0_sdram_s1_byteenable_ports_inv                     : std_logic_vector(1 downto 0);  -- mm_interconnect_0_sdram_s1_byteenable:inv -> sdram:az_be_n
 	signal mm_interconnect_0_sdram_s1_write_ports_inv                          : std_logic;                     -- mm_interconnect_0_sdram_s1_write:inv -> sdram:az_wr_n
-	signal rst_controller_reset_out_reset_ports_inv                            : std_logic;                     -- rst_controller_reset_out_reset:inv -> [jtag_uart_0:rst_n, nios2_gen2_0:reset_n, performance_counter_0:reset_n, sdram:reset_n]
+	signal rst_controller_reset_out_reset_ports_inv                            : std_logic;                     -- rst_controller_reset_out_reset:inv -> [jtag_uart_0:rst_n, nios2_gen2_0:reset_n, performance_counter_0:reset_n, sdram:reset_n, sgdma_mm2s:system_reset_n, sgdma_s2mm:system_reset_n]
 
 begin
 
@@ -403,7 +601,7 @@ begin
 			av_write_n     => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write_ports_inv, --                  .write_n
 			av_writedata   => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_writedata,       --                  .writedata
 			av_waitrequest => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_waitrequest,     --                  .waitrequest
-			av_irq         => irq_mapper_receiver0_irq                                         --               irq.irq
+			av_irq         => irq_mapper_receiver2_irq                                         --               irq.irq
 		);
 
 	nios2_gen2_0 : component processor_system_nios2_gen2_0
@@ -496,6 +694,71 @@ begin
 			zs_we_n        => sdram_we_n                                       --      .export
 		);
 
+	sgdma_mm2s : component processor_system_sgdma_mm2s
+		port map (
+			clk                           => pll_c0_clk,                                  --              clk.clk
+			system_reset_n                => rst_controller_reset_out_reset_ports_inv,    --            reset.reset_n
+			csr_chipselect                => mm_interconnect_0_sgdma_mm2s_csr_chipselect, --              csr.chipselect
+			csr_address                   => mm_interconnect_0_sgdma_mm2s_csr_address,    --                 .address
+			csr_read                      => mm_interconnect_0_sgdma_mm2s_csr_read,       --                 .read
+			csr_write                     => mm_interconnect_0_sgdma_mm2s_csr_write,      --                 .write
+			csr_writedata                 => mm_interconnect_0_sgdma_mm2s_csr_writedata,  --                 .writedata
+			csr_readdata                  => mm_interconnect_0_sgdma_mm2s_csr_readdata,   --                 .readdata
+			descriptor_read_readdata      => sgdma_mm2s_descriptor_read_readdata,         --  descriptor_read.readdata
+			descriptor_read_readdatavalid => sgdma_mm2s_descriptor_read_readdatavalid,    --                 .readdatavalid
+			descriptor_read_waitrequest   => sgdma_mm2s_descriptor_read_waitrequest,      --                 .waitrequest
+			descriptor_read_address       => sgdma_mm2s_descriptor_read_address,          --                 .address
+			descriptor_read_read          => sgdma_mm2s_descriptor_read_read,             --                 .read
+			descriptor_write_waitrequest  => sgdma_mm2s_descriptor_write_waitrequest,     -- descriptor_write.waitrequest
+			descriptor_write_address      => sgdma_mm2s_descriptor_write_address,         --                 .address
+			descriptor_write_write        => sgdma_mm2s_descriptor_write_write,           --                 .write
+			descriptor_write_writedata    => sgdma_mm2s_descriptor_write_writedata,       --                 .writedata
+			csr_irq                       => irq_mapper_receiver1_irq,                    --          csr_irq.irq
+			m_read_readdata               => sgdma_mm2s_m_read_readdata,                  --           m_read.readdata
+			m_read_readdatavalid          => sgdma_mm2s_m_read_readdatavalid,             --                 .readdatavalid
+			m_read_waitrequest            => sgdma_mm2s_m_read_waitrequest,               --                 .waitrequest
+			m_read_address                => sgdma_mm2s_m_read_address,                   --                 .address
+			m_read_read                   => sgdma_mm2s_m_read_read,                      --                 .read
+			out_data                      => sgdma_mm2s_out_data,                         --              out.data
+			out_valid                     => sgdma_mm2s_out_valid,                        --                 .valid
+			out_ready                     => sgdma_mm2s_out_ready,                        --                 .ready
+			out_endofpacket               => sgdma_mm2s_out_endofpacket,                  --                 .endofpacket
+			out_startofpacket             => sgdma_mm2s_out_startofpacket                 --                 .startofpacket
+		);
+
+	sgdma_s2mm : component processor_system_sgdma_s2mm
+		port map (
+			clk                           => pll_c0_clk,                                  --              clk.clk
+			system_reset_n                => rst_controller_reset_out_reset_ports_inv,    --            reset.reset_n
+			csr_chipselect                => mm_interconnect_0_sgdma_s2mm_csr_chipselect, --              csr.chipselect
+			csr_address                   => mm_interconnect_0_sgdma_s2mm_csr_address,    --                 .address
+			csr_read                      => mm_interconnect_0_sgdma_s2mm_csr_read,       --                 .read
+			csr_write                     => mm_interconnect_0_sgdma_s2mm_csr_write,      --                 .write
+			csr_writedata                 => mm_interconnect_0_sgdma_s2mm_csr_writedata,  --                 .writedata
+			csr_readdata                  => mm_interconnect_0_sgdma_s2mm_csr_readdata,   --                 .readdata
+			descriptor_read_readdata      => sgdma_s2mm_descriptor_read_readdata,         --  descriptor_read.readdata
+			descriptor_read_readdatavalid => sgdma_s2mm_descriptor_read_readdatavalid,    --                 .readdatavalid
+			descriptor_read_waitrequest   => sgdma_s2mm_descriptor_read_waitrequest,      --                 .waitrequest
+			descriptor_read_address       => sgdma_s2mm_descriptor_read_address,          --                 .address
+			descriptor_read_read          => sgdma_s2mm_descriptor_read_read,             --                 .read
+			descriptor_write_waitrequest  => sgdma_s2mm_descriptor_write_waitrequest,     -- descriptor_write.waitrequest
+			descriptor_write_address      => sgdma_s2mm_descriptor_write_address,         --                 .address
+			descriptor_write_write        => sgdma_s2mm_descriptor_write_write,           --                 .write
+			descriptor_write_writedata    => sgdma_s2mm_descriptor_write_writedata,       --                 .writedata
+			csr_irq                       => irq_mapper_receiver0_irq,                    --          csr_irq.irq
+			in_startofpacket              => avalon_st_adapter_out_0_startofpacket,       --               in.startofpacket
+			in_endofpacket                => avalon_st_adapter_out_0_endofpacket,         --                 .endofpacket
+			in_data                       => avalon_st_adapter_out_0_data,                --                 .data
+			in_valid                      => avalon_st_adapter_out_0_valid,               --                 .valid
+			in_ready                      => avalon_st_adapter_out_0_ready,               --                 .ready
+			in_empty                      => avalon_st_adapter_out_0_empty,               --                 .empty
+			m_write_waitrequest           => sgdma_s2mm_m_write_waitrequest,              --          m_write.waitrequest
+			m_write_address               => sgdma_s2mm_m_write_address,                  --                 .address
+			m_write_write                 => sgdma_s2mm_m_write_write,                    --                 .write
+			m_write_writedata             => sgdma_s2mm_m_write_writedata,                --                 .writedata
+			m_write_byteenable            => sgdma_s2mm_m_write_byteenable                --                 .byteenable
+		);
+
 	mm_interconnect_0 : component processor_system_mm_interconnect_0
 		port map (
 			clk_0_clk_clk                                         => clk_clk,                                                             --                                       clk_0_clk.clk
@@ -514,6 +777,34 @@ begin
 			nios2_gen2_0_instruction_master_waitrequest           => nios2_gen2_0_instruction_master_waitrequest,                         --                                                .waitrequest
 			nios2_gen2_0_instruction_master_read                  => nios2_gen2_0_instruction_master_read,                                --                                                .read
 			nios2_gen2_0_instruction_master_readdata              => nios2_gen2_0_instruction_master_readdata,                            --                                                .readdata
+			sgdma_mm2s_descriptor_read_address                    => sgdma_mm2s_descriptor_read_address,                                  --                      sgdma_mm2s_descriptor_read.address
+			sgdma_mm2s_descriptor_read_waitrequest                => sgdma_mm2s_descriptor_read_waitrequest,                              --                                                .waitrequest
+			sgdma_mm2s_descriptor_read_read                       => sgdma_mm2s_descriptor_read_read,                                     --                                                .read
+			sgdma_mm2s_descriptor_read_readdata                   => sgdma_mm2s_descriptor_read_readdata,                                 --                                                .readdata
+			sgdma_mm2s_descriptor_read_readdatavalid              => sgdma_mm2s_descriptor_read_readdatavalid,                            --                                                .readdatavalid
+			sgdma_mm2s_descriptor_write_address                   => sgdma_mm2s_descriptor_write_address,                                 --                     sgdma_mm2s_descriptor_write.address
+			sgdma_mm2s_descriptor_write_waitrequest               => sgdma_mm2s_descriptor_write_waitrequest,                             --                                                .waitrequest
+			sgdma_mm2s_descriptor_write_write                     => sgdma_mm2s_descriptor_write_write,                                   --                                                .write
+			sgdma_mm2s_descriptor_write_writedata                 => sgdma_mm2s_descriptor_write_writedata,                               --                                                .writedata
+			sgdma_mm2s_m_read_address                             => sgdma_mm2s_m_read_address,                                           --                               sgdma_mm2s_m_read.address
+			sgdma_mm2s_m_read_waitrequest                         => sgdma_mm2s_m_read_waitrequest,                                       --                                                .waitrequest
+			sgdma_mm2s_m_read_read                                => sgdma_mm2s_m_read_read,                                              --                                                .read
+			sgdma_mm2s_m_read_readdata                            => sgdma_mm2s_m_read_readdata,                                          --                                                .readdata
+			sgdma_mm2s_m_read_readdatavalid                       => sgdma_mm2s_m_read_readdatavalid,                                     --                                                .readdatavalid
+			sgdma_s2mm_descriptor_read_address                    => sgdma_s2mm_descriptor_read_address,                                  --                      sgdma_s2mm_descriptor_read.address
+			sgdma_s2mm_descriptor_read_waitrequest                => sgdma_s2mm_descriptor_read_waitrequest,                              --                                                .waitrequest
+			sgdma_s2mm_descriptor_read_read                       => sgdma_s2mm_descriptor_read_read,                                     --                                                .read
+			sgdma_s2mm_descriptor_read_readdata                   => sgdma_s2mm_descriptor_read_readdata,                                 --                                                .readdata
+			sgdma_s2mm_descriptor_read_readdatavalid              => sgdma_s2mm_descriptor_read_readdatavalid,                            --                                                .readdatavalid
+			sgdma_s2mm_descriptor_write_address                   => sgdma_s2mm_descriptor_write_address,                                 --                     sgdma_s2mm_descriptor_write.address
+			sgdma_s2mm_descriptor_write_waitrequest               => sgdma_s2mm_descriptor_write_waitrequest,                             --                                                .waitrequest
+			sgdma_s2mm_descriptor_write_write                     => sgdma_s2mm_descriptor_write_write,                                   --                                                .write
+			sgdma_s2mm_descriptor_write_writedata                 => sgdma_s2mm_descriptor_write_writedata,                               --                                                .writedata
+			sgdma_s2mm_m_write_address                            => sgdma_s2mm_m_write_address,                                          --                              sgdma_s2mm_m_write.address
+			sgdma_s2mm_m_write_waitrequest                        => sgdma_s2mm_m_write_waitrequest,                                      --                                                .waitrequest
+			sgdma_s2mm_m_write_byteenable                         => sgdma_s2mm_m_write_byteenable,                                       --                                                .byteenable
+			sgdma_s2mm_m_write_write                              => sgdma_s2mm_m_write_write,                                            --                                                .write
+			sgdma_s2mm_m_write_writedata                          => sgdma_s2mm_m_write_writedata,                                        --                                                .writedata
 			jtag_uart_0_avalon_jtag_slave_address                 => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_address,             --                   jtag_uart_0_avalon_jtag_slave.address
 			jtag_uart_0_avalon_jtag_slave_write                   => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write,               --                                                .write
 			jtag_uart_0_avalon_jtag_slave_read                    => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_read,                --                                                .read
@@ -547,7 +838,19 @@ begin
 			sdram_s1_byteenable                                   => mm_interconnect_0_sdram_s1_byteenable,                               --                                                .byteenable
 			sdram_s1_readdatavalid                                => mm_interconnect_0_sdram_s1_readdatavalid,                            --                                                .readdatavalid
 			sdram_s1_waitrequest                                  => mm_interconnect_0_sdram_s1_waitrequest,                              --                                                .waitrequest
-			sdram_s1_chipselect                                   => mm_interconnect_0_sdram_s1_chipselect                                --                                                .chipselect
+			sdram_s1_chipselect                                   => mm_interconnect_0_sdram_s1_chipselect,                               --                                                .chipselect
+			sgdma_mm2s_csr_address                                => mm_interconnect_0_sgdma_mm2s_csr_address,                            --                                  sgdma_mm2s_csr.address
+			sgdma_mm2s_csr_write                                  => mm_interconnect_0_sgdma_mm2s_csr_write,                              --                                                .write
+			sgdma_mm2s_csr_read                                   => mm_interconnect_0_sgdma_mm2s_csr_read,                               --                                                .read
+			sgdma_mm2s_csr_readdata                               => mm_interconnect_0_sgdma_mm2s_csr_readdata,                           --                                                .readdata
+			sgdma_mm2s_csr_writedata                              => mm_interconnect_0_sgdma_mm2s_csr_writedata,                          --                                                .writedata
+			sgdma_mm2s_csr_chipselect                             => mm_interconnect_0_sgdma_mm2s_csr_chipselect,                         --                                                .chipselect
+			sgdma_s2mm_csr_address                                => mm_interconnect_0_sgdma_s2mm_csr_address,                            --                                  sgdma_s2mm_csr.address
+			sgdma_s2mm_csr_write                                  => mm_interconnect_0_sgdma_s2mm_csr_write,                              --                                                .write
+			sgdma_s2mm_csr_read                                   => mm_interconnect_0_sgdma_s2mm_csr_read,                               --                                                .read
+			sgdma_s2mm_csr_readdata                               => mm_interconnect_0_sgdma_s2mm_csr_readdata,                           --                                                .readdata
+			sgdma_s2mm_csr_writedata                              => mm_interconnect_0_sgdma_s2mm_csr_writedata,                          --                                                .writedata
+			sgdma_s2mm_csr_chipselect                             => mm_interconnect_0_sgdma_s2mm_csr_chipselect                          --                                                .chipselect
 		);
 
 	irq_mapper : component processor_system_irq_mapper
@@ -555,7 +858,44 @@ begin
 			clk           => pll_c0_clk,                     --       clk.clk
 			reset         => rst_controller_reset_out_reset, -- clk_reset.reset
 			receiver0_irq => irq_mapper_receiver0_irq,       -- receiver0.irq
+			receiver1_irq => irq_mapper_receiver1_irq,       -- receiver1.irq
+			receiver2_irq => irq_mapper_receiver2_irq,       -- receiver2.irq
 			sender_irq    => nios2_gen2_0_irq_irq            --    sender.irq
+		);
+
+	avalon_st_adapter : component processor_system_avalon_st_adapter
+		generic map (
+			inBitsPerSymbol => 8,
+			inUsePackets    => 1,
+			inDataWidth     => 8,
+			inChannelWidth  => 0,
+			inErrorWidth    => 0,
+			inUseEmptyPort  => 0,
+			inUseValid      => 1,
+			inUseReady      => 1,
+			inReadyLatency  => 0,
+			outDataWidth    => 32,
+			outChannelWidth => 0,
+			outErrorWidth   => 0,
+			outUseEmptyPort => 1,
+			outUseValid     => 1,
+			outUseReady     => 1,
+			outReadyLatency => 0
+		)
+		port map (
+			in_clk_0_clk        => pll_c0_clk,                            -- in_clk_0.clk
+			in_rst_0_reset      => rst_controller_reset_out_reset,        -- in_rst_0.reset
+			in_0_data           => sgdma_mm2s_out_data,                   --     in_0.data
+			in_0_valid          => sgdma_mm2s_out_valid,                  --         .valid
+			in_0_ready          => sgdma_mm2s_out_ready,                  --         .ready
+			in_0_startofpacket  => sgdma_mm2s_out_startofpacket,          --         .startofpacket
+			in_0_endofpacket    => sgdma_mm2s_out_endofpacket,            --         .endofpacket
+			out_0_data          => avalon_st_adapter_out_0_data,          --    out_0.data
+			out_0_valid         => avalon_st_adapter_out_0_valid,         --         .valid
+			out_0_ready         => avalon_st_adapter_out_0_ready,         --         .ready
+			out_0_startofpacket => avalon_st_adapter_out_0_startofpacket, --         .startofpacket
+			out_0_endofpacket   => avalon_st_adapter_out_0_endofpacket,   --         .endofpacket
+			out_0_empty         => avalon_st_adapter_out_0_empty          --         .empty
 		);
 
 	rst_controller : component processor_system_rst_controller
