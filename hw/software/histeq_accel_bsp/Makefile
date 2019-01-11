@@ -227,12 +227,12 @@ altera_avalon_performance_counter_driver_C_LIB_SRCS := \
 	$(altera_avalon_performance_counter_driver_SRCS_ROOT)/src/altera_avalon_performance_counter.c \
 	$(altera_avalon_performance_counter_driver_SRCS_ROOT)/src/perf_print_formatted_report.c
 
-# altera_hostfs sources root 
-altera_hostfs_SRCS_ROOT := drivers
+# altera_avalon_sgdma_driver sources root 
+altera_avalon_sgdma_driver_SRCS_ROOT := drivers
 
-# altera_hostfs sources 
-altera_hostfs_C_LIB_SRCS := \
-	$(altera_hostfs_SRCS_ROOT)/src/altera_hostfs.c
+# altera_avalon_sgdma_driver sources 
+altera_avalon_sgdma_driver_C_LIB_SRCS := \
+	$(altera_avalon_sgdma_driver_SRCS_ROOT)/src/altera_avalon_sgdma.c
 
 # altera_nios2_gen2_hal_driver sources root 
 altera_nios2_gen2_hal_driver_SRCS_ROOT := HAL
@@ -335,7 +335,7 @@ hal_C_LIB_SRCS := \
 COMPONENT_C_LIB_SRCS += \
 	$(altera_avalon_jtag_uart_driver_C_LIB_SRCS) \
 	$(altera_avalon_performance_counter_driver_C_LIB_SRCS) \
-	$(altera_hostfs_C_LIB_SRCS) \
+	$(altera_avalon_sgdma_driver_C_LIB_SRCS) \
 	$(altera_nios2_gen2_hal_driver_C_LIB_SRCS) \
 	$(hal_C_LIB_SRCS)
 

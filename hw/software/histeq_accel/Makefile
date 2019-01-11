@@ -142,10 +142,8 @@ ACDS_VERSION := 18.1
 ELF := histeq_accel.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS += hello_world.c
-C_SRCS += .metadata/.plugins/org.eclipse.cdt.make.core/specs.c
-C_SRCS += .metadata/.plugins/org.eclipse.cdt.managedbuilder.core/spec.c
-CXX_SRCS := .metadata/.plugins/org.eclipse.cdt.make.core/specs.cpp
+C_SRCS := hello_world.c
+CXX_SRCS :=
 ASM_SRCS :=
 
 

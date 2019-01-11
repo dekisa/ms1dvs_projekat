@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>30.12.2018. 20.03.38</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1546196618561</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\Amin\git\ms1dvs_projekat\hw\software\histeq_accel_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Jan 11, 2019 3:06:15 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1547215575134</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>D:\Projekti\ms1dvs_projekat\hw\software\histeq_accel_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\processor_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -875,18 +875,6 @@
                 <Group>none</Group>
         </Setting>
         <Setting>
-                <SettingName>altera_hostfs.hostfs_name</SettingName>
-                <Identifier>ALTERA_HOSTFS_NAME</Identifier>
-                <Type>QuotedString</Type>
-                <Value>/mnt/host</Value>
-                <DefaultValue>/mnt/host</DefaultValue>
-                <DestinationFile>system_h_define</DestinationFile>
-                <Description>Mount point</Description>
-                <Restrictions>none</Restrictions>
-                <Enabled>false</Enabled>
-                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-        </Setting>
-        <Setting>
                 <SettingName>altera_avalon_jtag_uart_driver.enable_small_driver</SettingName>
                 <Identifier>ALTERA_AVALON_JTAG_UART_SMALL</Identifier>
                 <Type>BooleanDefineOnly</Type>
@@ -917,20 +905,32 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>performance_counter_0</slaveDescriptor>
+                <slaveDescriptor>sgdma_s2mm</slaveDescriptor>
                 <addressRange>0x04001000 - 0x0400103F</addressRange>
                 <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>sgdma_mm2s</slaveDescriptor>
+                <addressRange>0x04001040 - 0x0400107F</addressRange>
+                <addressSpan>64</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>performance_counter_0</slaveDescriptor>
+                <addressRange>0x04001080 - 0x040010BF</addressRange>
+                <addressSpan>64</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>pll</slaveDescriptor>
-                <addressRange>0x04001040 - 0x0400104F</addressRange>
+                <addressRange>0x040010C0 - 0x040010CF</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x04001050 - 0x04001057</addressRange>
+                <addressRange>0x040010D0 - 0x040010D7</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
@@ -958,8 +958,4 @@
                 <sectionName>.stack</sectionName>
                 <regionName>sdram</regionName>
         </LinkerSection>
-        <SoftwarePackageInfo>
-                <name>altera_hostfs</name>
-                <version>default</version>
-        </SoftwarePackageInfo>
 </sch:Settings>
