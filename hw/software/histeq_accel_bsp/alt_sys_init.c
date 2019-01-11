@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_gen2_0' in SOPC Builder design 'processor_system'
  * SOPC Builder design path: ../../processor_system.sopcinfo
  *
- * Generated: Fri Jan 11 15:05:36 CET 2019
+ * Generated: Fri Jan 11 17:15:14 CET 2019
  */
 
 /*
@@ -62,6 +62,7 @@
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_performance_counter.h"
 #include "altera_avalon_sgdma.h"
+#include "altera_hostfs.h"
 
 /*
  * Allocate the device storage
@@ -72,6 +73,7 @@ ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_0, jtag_uart_0);
 ALTERA_AVALON_PERFORMANCE_COUNTER_INSTANCE ( PERFORMANCE_COUNTER_0, performance_counter_0);
 ALTERA_AVALON_SGDMA_INSTANCE ( SGDMA_MM2S, sgdma_mm2s);
 ALTERA_AVALON_SGDMA_INSTANCE ( SGDMA_S2MM, sgdma_s2mm);
+ALTERA_HOSTFS_INSTANCE ( ALTERA_HOSTFS, altera_hostfs);
 
 /*
  * Initialize the interrupt controller devices
@@ -98,4 +100,5 @@ void alt_sys_init( void )
     ALTERA_AVALON_PERFORMANCE_COUNTER_INIT ( PERFORMANCE_COUNTER_0, performance_counter_0);
     ALTERA_AVALON_SGDMA_INIT ( SGDMA_MM2S, sgdma_mm2s);
     ALTERA_AVALON_SGDMA_INIT ( SGDMA_S2MM, sgdma_s2mm);
+    ALTERA_HOSTFS_INIT ( ALTERA_HOSTFS, altera_hostfs);
 }

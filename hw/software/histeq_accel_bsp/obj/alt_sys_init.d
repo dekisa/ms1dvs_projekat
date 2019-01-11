@@ -9,7 +9,7 @@ obj/alt_sys_init.o: alt_sys_init.c system.h linker.h \
  HAL/inc/sys/alt_llist.h HAL/inc/priv/alt_dev_llist.h \
  drivers/inc/altera_avalon_performance_counter.h HAL/inc/io.h \
  HAL/inc/alt_types.h drivers/inc/altera_avalon_sgdma.h \
- drivers/inc/altera_avalon_sgdma_descriptor.h
+ drivers/inc/altera_avalon_sgdma_descriptor.h drivers/inc/altera_hostfs.h
 
 system.h:
 
@@ -60,3 +60,5 @@ HAL/inc/alt_types.h:
 drivers/inc/altera_avalon_sgdma.h:
 
 drivers/inc/altera_avalon_sgdma_descriptor.h:
+
+drivers/inc/altera_hostfs.h:

@@ -38,72 +38,72 @@
 
 // ------------------------------------------
 // Generation parameters:
-//   output_name:         processor_system_mm_interconnect_0_rsp_mux
+//   output_name:         processor_system_mm_interconnect_0_cmd_mux_007
 //   NUM_INPUTS:          8
 //   ARBITRATION_SHARES:  1 1 1 1 1 1 1 1
-//   ARBITRATION_SCHEME   "no-arb"
-//   PIPELINE_ARB:        0
-//   PKT_TRANS_LOCK:      72 (arbitration locking enabled)
-//   ST_DATA_W:           108
+//   ARBITRATION_SCHEME   "round-robin"
+//   PIPELINE_ARB:        1
+//   PKT_TRANS_LOCK:      54 (arbitration locking enabled)
+//   ST_DATA_W:           90
 //   ST_CHANNEL_W:        8
 // ------------------------------------------
 
-module processor_system_mm_interconnect_0_rsp_mux
+module processor_system_mm_interconnect_0_cmd_mux_007
 (
     // ----------------------
     // Sinks
     // ----------------------
     input                       sink0_valid,
-    input [108-1   : 0]  sink0_data,
+    input [90-1   : 0]  sink0_data,
     input [8-1: 0]  sink0_channel,
     input                       sink0_startofpacket,
     input                       sink0_endofpacket,
     output                      sink0_ready,
 
     input                       sink1_valid,
-    input [108-1   : 0]  sink1_data,
+    input [90-1   : 0]  sink1_data,
     input [8-1: 0]  sink1_channel,
     input                       sink1_startofpacket,
     input                       sink1_endofpacket,
     output                      sink1_ready,
 
     input                       sink2_valid,
-    input [108-1   : 0]  sink2_data,
+    input [90-1   : 0]  sink2_data,
     input [8-1: 0]  sink2_channel,
     input                       sink2_startofpacket,
     input                       sink2_endofpacket,
     output                      sink2_ready,
 
     input                       sink3_valid,
-    input [108-1   : 0]  sink3_data,
+    input [90-1   : 0]  sink3_data,
     input [8-1: 0]  sink3_channel,
     input                       sink3_startofpacket,
     input                       sink3_endofpacket,
     output                      sink3_ready,
 
     input                       sink4_valid,
-    input [108-1   : 0]  sink4_data,
+    input [90-1   : 0]  sink4_data,
     input [8-1: 0]  sink4_channel,
     input                       sink4_startofpacket,
     input                       sink4_endofpacket,
     output                      sink4_ready,
 
     input                       sink5_valid,
-    input [108-1   : 0]  sink5_data,
+    input [90-1   : 0]  sink5_data,
     input [8-1: 0]  sink5_channel,
     input                       sink5_startofpacket,
     input                       sink5_endofpacket,
     output                      sink5_ready,
 
     input                       sink6_valid,
-    input [108-1   : 0]  sink6_data,
+    input [90-1   : 0]  sink6_data,
     input [8-1: 0]  sink6_channel,
     input                       sink6_startofpacket,
     input                       sink6_endofpacket,
     output                      sink6_ready,
 
     input                       sink7_valid,
-    input [108-1   : 0]  sink7_data,
+    input [90-1   : 0]  sink7_data,
     input [8-1: 0]  sink7_channel,
     input                       sink7_startofpacket,
     input                       sink7_endofpacket,
@@ -114,7 +114,7 @@ module processor_system_mm_interconnect_0_rsp_mux
     // Source
     // ----------------------
     output                      src_valid,
-    output [108-1    : 0] src_data,
+    output [90-1    : 0] src_data,
     output [8-1 : 0] src_channel,
     output                      src_startofpacket,
     output                      src_endofpacket,
@@ -126,13 +126,13 @@ module processor_system_mm_interconnect_0_rsp_mux
     input clk,
     input reset
 );
-    localparam PAYLOAD_W        = 108 + 8 + 2;
+    localparam PAYLOAD_W        = 90 + 8 + 2;
     localparam NUM_INPUTS       = 8;
     localparam SHARE_COUNTER_W  = 1;
-    localparam PIPELINE_ARB     = 0;
-    localparam ST_DATA_W        = 108;
+    localparam PIPELINE_ARB     = 1;
+    localparam ST_DATA_W        = 90;
     localparam ST_CHANNEL_W     = 8;
-    localparam PKT_TRANS_LOCK   = 72;
+    localparam PKT_TRANS_LOCK   = 54;
 
     // ------------------------------------------
     // Signals
@@ -165,6 +165,15 @@ module processor_system_mm_interconnect_0_rsp_mux
     assign valid[6] = sink6_valid;
     assign valid[7] = sink7_valid;
 
+    wire [NUM_INPUTS - 1 : 0] eop;
+    assign eop[0] = sink0_endofpacket;
+    assign eop[1] = sink1_endofpacket;
+    assign eop[2] = sink2_endofpacket;
+    assign eop[3] = sink3_endofpacket;
+    assign eop[4] = sink4_endofpacket;
+    assign eop[5] = sink5_endofpacket;
+    assign eop[6] = sink6_endofpacket;
+    assign eop[7] = sink7_endofpacket;
 
     // ------------------------------------------
     // ------------------------------------------
@@ -173,14 +182,23 @@ module processor_system_mm_interconnect_0_rsp_mux
     // ------------------------------------------
     reg [NUM_INPUTS - 1 : 0] lock;
     always @* begin
-      lock[0] = sink0_data[72];
-      lock[1] = sink1_data[72];
-      lock[2] = sink2_data[72];
-      lock[3] = sink3_data[72];
-      lock[4] = sink4_data[72];
-      lock[5] = sink5_data[72];
-      lock[6] = sink6_data[72];
-      lock[7] = sink7_data[72];
+      lock[0] = sink0_data[54];
+      lock[1] = sink1_data[54];
+      lock[2] = sink2_data[54];
+      lock[3] = sink3_data[54];
+      lock[4] = sink4_data[54];
+      lock[5] = sink5_data[54];
+      lock[6] = sink6_data[54];
+      lock[7] = sink7_data[54];
+    end
+    reg [NUM_INPUTS - 1 : 0] locked = '0;
+    always @(posedge clk or posedge reset) begin
+      if (reset) begin
+        locked <= '0;
+      end
+      else begin
+        locked <= next_grant & lock;
+      end
     end
 
     assign last_cycle = src_valid & src_ready & src_endofpacket & ~(|(lock & grant));
@@ -247,22 +265,6 @@ module processor_system_mm_interconnect_0_rsp_mux
     // ------------------------------------------
     // Flag to indicate first packet of an arb sequence.
     // ------------------------------------------
-    wire grant_changed = ~packet_in_progress && ~(|(saved_grant & valid));
-    reg first_packet_r;
-    wire first_packet = grant_changed | first_packet_r;
-    always @(posedge clk or posedge reset) begin
-      if (reset) begin
-        first_packet_r <= 1'b0;
-      end
-      else begin 
-        if (update_grant)
-          first_packet_r <= 1'b1;
-        else if (last_cycle)
-          first_packet_r <= 1'b0;
-        else if (grant_changed)
-          first_packet_r <= 1'b1;
-      end
-    end
 
     // ------------------------------------------
     // Compute the next share-count value.
@@ -272,13 +274,8 @@ module processor_system_mm_interconnect_0_rsp_mux
     reg share_count_zero_flag;
 
     always @* begin
-      if (first_packet) begin
-        p1_share_count = next_grant_share;
-      end
-      else begin
-            // Update the counter, but don't decrement below 0.
-        p1_share_count = share_count_zero_flag ? '0 : share_count - 1'b1;
-      end
+        // Update the counter, but don't decrement below 0.
+      p1_share_count = share_count_zero_flag ? '0 : share_count - 1'b1;
      end
 
     // ------------------------------------------
@@ -290,64 +287,15 @@ module processor_system_mm_interconnect_0_rsp_mux
         share_count_zero_flag <= 1'b1;
       end
       else begin
-        if (last_cycle) begin
+        if (update_grant) begin
+          share_count <= next_grant_share;
+          share_count_zero_flag <= (next_grant_share == '0);
+        end
+        else if (last_cycle) begin
           share_count <= p1_share_count;
           share_count_zero_flag <= (p1_share_count == '0);
         end
       end
-    end
-
-    // ------------------------------------------
-    // For each input, maintain a final_packet signal which goes active for the
-    // last packet of a full-share packet sequence.  Example: if I have 4
-    // shares and I'm continuously requesting, final_packet is active in the
-    // 4th packet.
-    // ------------------------------------------
-    wire final_packet_0 = 1'b1;
-
-    wire final_packet_1 = 1'b1;
-
-    wire final_packet_2 = 1'b1;
-
-    wire final_packet_3 = 1'b1;
-
-    wire final_packet_4 = 1'b1;
-
-    wire final_packet_5 = 1'b1;
-
-    wire final_packet_6 = 1'b1;
-
-    wire final_packet_7 = 1'b1;
-
-
-    // ------------------------------------------
-    // Concatenate all final_packet signals (wire or reg) into a handy vector.
-    // ------------------------------------------
-    wire [NUM_INPUTS - 1 : 0] final_packet = {
-    final_packet_7,
-    final_packet_6,
-    final_packet_5,
-    final_packet_4,
-    final_packet_3,
-    final_packet_2,
-    final_packet_1,
-    final_packet_0
-    };
-
-    // ------------------------------------------
-    // ------------------------------------------
-    wire p1_done = |(final_packet & grant);
-
-    // ------------------------------------------
-    // Flag for the first cycle of packets within an 
-    // arb sequence
-    // ------------------------------------------
-    reg first_cycle;
-    always @(posedge clk, posedge reset) begin
-      if (reset)
-        first_cycle <= 0;
-      else
-        first_cycle <= last_cycle && ~p1_done;
     end
 
 
@@ -355,17 +303,25 @@ module processor_system_mm_interconnect_0_rsp_mux
       update_grant = 0;
 
         // ------------------------------------------
-        // No arbitration pipeline, update grant whenever
-        // the current arb winner has consumed all shares,
-        // or all requests are low
+        // The pipeline delays grant by one cycle, so
+        // we have to calculate the update_grant signal
+        // one cycle ahead of time.
+        //
+        // Possible optimization: omit the first clause
+        //    "if (!packet_in_progress & ~src_valid) ..."
+        //   cost: one idle cycle at the the beginning of each 
+        //     grant cycle.
+        //   benefit: save a small amount of logic.
         // ------------------------------------------
-  update_grant = (last_cycle && p1_done) || (first_cycle && ~(|valid));
-  update_grant = last_cycle;
+    if (!packet_in_progress & !src_valid)
+      update_grant = 1;
+    if (last_cycle && share_count_zero_flag)
+      update_grant = 1;
     end
 
     wire save_grant;
-    assign save_grant = 1;
-    assign grant = next_grant;
+    assign save_grant = update_grant;
+    assign grant = saved_grant;
 
     always @(posedge clk, posedge reset) begin
       if (reset)
@@ -387,15 +343,24 @@ module processor_system_mm_interconnect_0_rsp_mux
     // The pipelined arbitration scheme does not require
     // request to be held high during the packet.
     // ------------------------------------------
-    assign request = valid;
+    reg [NUM_INPUTS - 1 : 0] prev_request;
+    always @(posedge clk, posedge reset) begin
+      if (reset)
+        prev_request <= '0;
+      else
+        prev_request <= request & ~(valid & eop);
+    end
+
+    assign request = (PIPELINE_ARB == 1) ? valid | locked :
+    prev_request | valid | locked;
 
     wire [NUM_INPUTS - 1 : 0] next_grant_from_arb;
                                
     altera_merlin_arbitrator
     #(
     .NUM_REQUESTERS(NUM_INPUTS),
-    .SCHEME ("no-arb"),
-    .PIPELINE (0)
+    .SCHEME ("round-robin"),
+    .PIPELINE (1)
     ) arb (
     .clk (clk),
     .reset (reset),

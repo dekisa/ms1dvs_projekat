@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Jan 11, 2019 3:06:15 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1547215575134</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Jan 11, 2019 5:15:14 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1547223314209</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>D:\Projekti\ms1dvs_projekat\hw\software\histeq_accel_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\processor_system.sopcinfo</SopcDesignFile>
@@ -898,6 +898,18 @@
                 <Enabled>false</Enabled>
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
+        <Setting>
+                <SettingName>altera_hostfs.hostfs_name</SettingName>
+                <Identifier>ALTERA_HOSTFS_NAME</Identifier>
+                <Type>QuotedString</Type>
+                <Value>/mnt/host</Value>
+                <DefaultValue>/mnt/host</DefaultValue>
+                <DestinationFile>system_h_define</DestinationFile>
+                <Description>Mount point</Description>
+                <Restrictions>none</Restrictions>
+                <Enabled>false</Enabled>
+                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+        </Setting>
         <MemoryMap>
                 <slaveDescriptor>sdram</slaveDescriptor>
                 <addressRange>0x02000000 - 0x03FFFFFF</addressRange>
@@ -934,6 +946,12 @@
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>histeq_calc_0</slaveDescriptor>
+                <addressRange>0x040010D8 - 0x040010DF</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes/>
+        </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>
                 <regionName>sdram</regionName>
@@ -958,4 +976,8 @@
                 <sectionName>.stack</sectionName>
                 <regionName>sdram</regionName>
         </LinkerSection>
+        <SoftwarePackageInfo>
+                <name>altera_hostfs</name>
+                <version>default</version>
+        </SoftwarePackageInfo>
 </sch:Settings>

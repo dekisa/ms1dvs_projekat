@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_gen2_0' in SOPC Builder design 'processor_system'
  * SOPC Builder design path: ../../processor_system.sopcinfo
  *
- * Generated: Fri Jan 11 15:05:36 CET 2019
+ * Generated: Fri Jan 11 17:15:14 CET 2019
  */
 
 /*
@@ -139,6 +139,7 @@
 #define __ALTERA_AVALON_SGDMA
 #define __ALTERA_NIOS2_GEN2
 #define __ALTPLL
+#define __HISTEQ_CALC
 
 
 /*
@@ -178,6 +179,14 @@
 
 
 /*
+ * altera_hostfs configuration
+ *
+ */
+
+#define ALTERA_HOSTFS_NAME "/mnt/host"
+
+
+/*
  * hal configuration
  *
  */
@@ -186,6 +195,20 @@
 #define ALT_MAX_FD 32
 #define ALT_SYS_CLK none
 #define ALT_TIMESTAMP_CLK none
+
+
+/*
+ * histeq_calc_0 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_histeq_calc_0 histeq_calc
+#define HISTEQ_CALC_0_BASE 0x40010d8
+#define HISTEQ_CALC_0_IRQ -1
+#define HISTEQ_CALC_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define HISTEQ_CALC_0_NAME "/dev/histeq_calc_0"
+#define HISTEQ_CALC_0_SPAN 8
+#define HISTEQ_CALC_0_TYPE "histeq_calc"
 
 
 /*

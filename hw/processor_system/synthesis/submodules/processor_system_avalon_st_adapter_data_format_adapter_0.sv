@@ -40,16 +40,16 @@
 // Generation parameters:
 //   output_name:        processor_system_avalon_st_adapter_data_format_adapter_0
 //   usePackets:         true
-//   hasInEmpty:         false
-//   inEmptyWidth:       0
+//   hasInEmpty:         true
+//   inEmptyWidth:       1
 //   hasOutEmpty:        true 
 //   outEmptyWidth:      2
-//   inDataWidth:        8
+//   inDataWidth:        16
 //   outDataWidth:       32
 //   channelWidth:       0
 //   inErrorWidth:       0
 //   outErrorWidth:      0
-//   inSymbolsPerBeat:   1
+//   inSymbolsPerBeat:   2
 //   outSymbolsPerBeat:  4
 //   maxState:           3
 //   stateWidth:         2
@@ -66,9 +66,10 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
  // Interface: in
  output reg         in_ready,
  input              in_valid,
- input [8-1 : 0]    in_data,
+ input [16-1 : 0]    in_data,
  input              in_startofpacket,
  input              in_endofpacket,
+ input              in_empty,
  // Interface: out
  input                out_ready,
  output reg           out_valid,
@@ -102,9 +103,10 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
    reg            a_valid;
    reg            a_channel;
    reg [8-1:0]    a_data0; 
+   reg [8-1:0]    a_data1; 
    reg            a_startofpacket;
    reg            a_endofpacket;
-   reg            a_empty;
+   reg  [1-1:0]   a_empty;
    reg            a_error;
    reg            b_ready;
    reg            b_valid;
@@ -141,7 +143,6 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
    reg            out_channel;
 
 
-   reg  [1-1:0] in_empty = 0;
 
    reg in_error = 0;
    reg out_error; 
@@ -165,6 +166,7 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
          a_valid   <= 0;
          a_channel <= 0;
          a_data0   <= 0;
+         a_data1   <= 0;
          a_startofpacket <= 0;
          a_endofpacket   <= 0;
          a_empty <= 0; 
@@ -174,7 +176,8 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
             a_valid   <= in_valid;
             a_channel <= in_channel;
             a_error   <= in_error;
-            a_data0 <= in_data[7:0];
+            a_data0 <= in_data[15:8];
+            a_data1 <= in_data[7:0];
             a_startofpacket <= in_startofpacket;
             a_endofpacket   <= in_endofpacket;
             a_empty         <= 0; 
@@ -279,15 +282,18 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
             0 : begin
                mem_writedata0 = a_data0;
                b_data[31:24] = a_data0;
+               mem_writedata1 = a_data1;
+               b_data[23:16] = a_data1;
                if (out_ready || ~out_valid) begin
                   a_ready = 1;
                   if (a_valid) 
                   begin
                      new_state = state+1'b1;
                      mem_write0 = 1;
+                     mem_write1 = 1;
                      sop_mem_writeenable = 1;
                      if (a_endofpacket) begin
-                        b_empty = a_empty+3;
+                        b_empty = a_empty+2;
                         b_valid = 1;
                         b_startofpacket = a_startofpacket;
                         new_state = 0;
@@ -296,19 +302,18 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
                end
             end
          1 : begin
-               mem_writedata0 = mem_readdata0;
                b_data[31:24] = mem_readdata0;
-               mem_writedata1 = a_data0;
-               b_data[23:16] = a_data0;
+               b_data[23:16] = mem_readdata1;
+               b_data[15:8] = a_data0;
+               b_data[7:0] = a_data1;
                if (out_ready || ~out_valid) begin
                   a_ready = 1;
                   if (a_valid) 
                   begin
                      new_state = state+1'b1;
-                     mem_write0 = 1;
-                     mem_write1 = 1;
+                     b_valid = 1;
                      if (a_endofpacket) begin
-                        b_empty = a_empty+2;
+                        b_empty = a_empty+0;
                         b_valid = 1;
                         new_state = 0;
                      end
@@ -316,12 +321,10 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
                end
             end
          2 : begin
-               mem_writedata0 = mem_readdata0;
-               b_data[31:24] = mem_readdata0;
-               mem_writedata1 = mem_readdata1;
-               b_data[23:16] = mem_readdata1;
-               mem_writedata2 = a_data0;
-               b_data[15:8] = a_data0;
+               mem_writedata0 = a_data0;
+               b_data[31:24] = a_data0;
+               mem_writedata1 = a_data1;
+               b_data[23:16] = a_data1;
                if (out_ready || ~out_valid) begin
                   a_ready = 1;
                   if (a_valid) 
@@ -329,9 +332,9 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
                      new_state = state+1'b1;
                      mem_write0 = 1;
                      mem_write1 = 1;
-                     mem_write2 = 1;
+                     sop_mem_writeenable = 1;
                      if (a_endofpacket) begin
-                        b_empty = a_empty+1;
+                        b_empty = a_empty+2;
                         b_valid = 1;
                         new_state = 0;
                      end
@@ -341,8 +344,8 @@ module processor_system_avalon_st_adapter_data_format_adapter_0 (
          3 : begin
                b_data[31:24] = mem_readdata0;
                b_data[23:16] = mem_readdata1;
-               b_data[15:8] = mem_readdata2;
-               b_data[7:0] = a_data0;
+               b_data[15:8] = a_data0;
+               b_data[7:0] = a_data1;
                if (out_ready || ~out_valid) begin
                   a_ready = 1;
                   if (a_valid) 
